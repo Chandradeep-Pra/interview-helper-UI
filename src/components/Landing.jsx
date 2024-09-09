@@ -1,7 +1,13 @@
 import Starfield from './Starbg';
+import { useNavigate } from 'react-router-dom';
 
 import Landinglogo from './Landinglogo';
 const Landing = () => {
+  const navigate = useNavigate();
+
+  const handleTryFree = () =>{
+    navigate('/dashboard')
+  }
   return (
     <div className="relative w-full h-full">
       <Starfield />
@@ -34,7 +40,7 @@ const Landing = () => {
             </div>
             <div className='w-[70%] flex gap-2 flex-col mt-16'>
                 <div className='flex w-full gap-2'>
-                  <button className='w-1/3 rounded-lg bg-blue-600 px-2 py-2 font-bold text-white'>Try for Free</button>
+                  <button onClick={handleTryFree} className='w-1/3 rounded-lg bg-blue-600 px-2 py-2 font-bold text-white'>Try for Free</button>
                   <button className='w-2/3 rounded-lg bg-transparent border-2 border-blue-800 text-white font-bold px-2 py-2'>Prepare with an Expert</button>
                 </div>
                 <button className='w-full bg-green-600 px-2 py-2 rounded-lg text-white font-bold'>OA & Interview Preparation</button>
