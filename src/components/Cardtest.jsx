@@ -1,6 +1,15 @@
 import React from 'react';
+import { gsap } from 'gsap';
 
 const Cardtest = () => {
+  const handleMouseEnter = (event) => {
+    gsap.to(event.currentTarget.querySelector('img'), { scale: 1.1, duration: 0.3 });
+  };
+
+  const handleMouseLeave = (event) => {
+    gsap.to(event.currentTarget.querySelector('img'), { scale: 1, duration: 0.3 });
+  };
+
   const mockTest = [
     {
       cName: "Headout",
@@ -63,7 +72,12 @@ const Cardtest = () => {
   return (
     <div className='flex flex-wrap gap-4 '>
       {mockTest.map((item, index) => (
-        <div key={index} className='h-[250px] w-[220px] rounded-lg bg-black px-2 py-1 flex flex-col justify-around'>
+        <div 
+          key={index} 
+          className='h-[250px] w-[220px] rounded-lg bg-black px-2 py-1 flex flex-col justify-around'
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           {/* Container for the image and the overlay text */}
           <div className='relative w-full h-1/2'>
             <img
@@ -72,7 +86,7 @@ const Cardtest = () => {
               className='w-full h-full object-cover rounded-t-lg'
             />
             {/* Span element for Free/Paid */}
-            <span className={`absolute top-2 right-2 px-2 py-1 rounded-full text-white text-xs font-medium ${item.type === 'Free' ? 'bg-green-500' : 'bg-orange-500'}`}>
+            <span className={`absolute top-2 right-2 px-2 py-1 rounded-full text-white text-xs font-bold ${item.type === 'Free' ? 'bg-green-500' : 'bg-red-500'}`}>
               {item.type}
             </span>
           </div>
