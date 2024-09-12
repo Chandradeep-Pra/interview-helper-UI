@@ -1,17 +1,19 @@
 import { MdSpaceDashboard, MdGroups } from "react-icons/md";
 import { AiFillTrademarkCircle } from "react-icons/ai";
 
+
 const menuIcons = [
+   
     {
-        title:"Dashboard",
+        title:"dashboard",
         icon: <MdSpaceDashboard size={20} />
     },
     {
-        title:"Seminars",
+        title:"seminars",
         icon: <MdGroups size={20} />
     },
     {
-        title: "Resources",
+        title: "resources",
         icon: <AiFillTrademarkCircle size={20} />
     }
 ]
