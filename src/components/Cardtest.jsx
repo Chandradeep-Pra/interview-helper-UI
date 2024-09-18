@@ -83,7 +83,7 @@ const Cardtest = () => {
             <img
               src={item.source}
               alt="Company"
-              className='w-full h-full object-cover rounded-t-lg'
+              className='w-full h-full object-cover rounded-t-lg hover:rounded-lg'
             />
             {/* Span element for Free/Paid */}
             <span className={`absolute top-2 right-2 px-2 py-1 rounded-full text-white text-xs font-bold ${item.type === 'Free' ? 'bg-green-500' : 'bg-red-500'}`}>

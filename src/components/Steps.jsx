@@ -1,17 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-const Steps = () => {
-  const [activeStep, setActiveStep] = useState(null);
-  const stepDet = ['Upload Resume', 'Enter Job description'];
+const Steps = ({ activeStep, setActiveStep }) => {
+  const stepDet = ['Upload Resume', 'Enter Job Description'];
 
   const handleStepClick = (index) => {
-    setActiveStep(index === activeStep ? null : index); // Toggle the visibility of the step
+    setActiveStep(index); // Set the active step based on the clicked index
   };
 
   return (
-    <div className='flex  gap-1 bg-zinc-700 rounded-full items-center justify-around'>
-      {stepDet?.map((step, i) => (
-        <div key={i} className='text-gray-200 px-1 py-1 flex gap-1  items-center justify-center '>
+    <div className='flex gap-1 bg-zinc-700 rounded-full items-center justify-around'>
+      {stepDet.map((step, i) => (
+        <div key={i} className='text-gray-200 px-1 py-1 flex gap-1 items-center justify-center'>
           <span
             className='bg-white text-black px-1 text-xs text-center rounded-full cursor-pointer'
             onClick={() => handleStepClick(i)}
