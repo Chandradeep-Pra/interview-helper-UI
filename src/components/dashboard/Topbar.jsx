@@ -1,10 +1,9 @@
 import React from 'react';
 import Searchbar from '../Searchbar';
 import { MdNotifications } from 'react-icons/md';
-import dp from './dp.png'
+import dp from './dp.png';
 
-
-const Topbar = () => {
+const Topbar = React.memo(() => {
     const count = 2; // Change this to test different values
 
     return (
@@ -20,18 +19,17 @@ const Topbar = () => {
                 <div className='flex items-center gap-2 '>
                     <div className="relative  items-center">
                         <MdNotifications size={24} className="text-gray-500" />
-                            {(count !== 0) > 0 && (
+                        {(count > 0) && (
                             <span className="absolute -top-1 -right-1 inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 rounded-full">
                                 {count}
                             </span>
-                            )}
+                        )}
                     </div>
-                    <img src={dp} className='w-[30px] h-auto rounded-full border-2 border-blue-600 p-[1px]' alt="" />
+                    <img src={dp} className='w-[30px] h-auto rounded-full border-2 border-blue-600 p-[1px]' alt="Profile" />
                 </div>
-                
             </div>
         </div>
     );
-};
+});
 
 export default Topbar;

@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.text-gradient{
+    @apply bg-gradient-to-r from-fuchsia-600 to-purple-600
+}
