@@ -44,7 +44,7 @@ const Sidebar = ({ questions, expand, onQuestionClick, toggleExpand }) => {
                     key={index}
                     onClick={() => onQuestionClick(index)}
                 >
-                    <h1 className='text-lg bg-slate-900 px-4 py-2 rounded-2xl'>{index + 1}</h1>
+                    <h1 className={`text-lg bg-slate-900 ${index < 9?'px-5':'px-4'}  py-2 rounded-2xl`}>{index + 1}</h1>
                     {expand && <h1 className='text-sm'>{item.Question}</h1>}
                 </div>
             ))}
@@ -58,7 +58,7 @@ const QuestionDisplay = ({ question, index, onNext, onSubmit }) => (
             <h1 className='font-bold text-2xl bg-blue-500 px-4 py-2 rounded-2xl'>{index + 1}</h1>
             <h1 className='ml-2'>{question.Question}</h1>
         </div>
-        <div className='bg-red-200 w-full mt-8 h-1/2 rounded-2xl bg-slate-900/[0.6] border-2 border-blue-500'></div>
+        <textarea className='bg-red-200 w-full mt-8 h-1/2 rounded-2xl bg-slate-900/[0.6] border-2 border-blue-500 p-4 text-sm min-h-[300px]'></textarea>
         <div className='w-full flex justify-end gap-2 mt-4 px-2'>
             <button className='bg-blue-500 p-2 rounded-full'><FaMicrophone size={24} /></button>
             {index < interviewQuestions.length - 1 ? (
@@ -85,11 +85,16 @@ const ControlPanel = ({ onEndInterview, showConfirmation, setShowConfirmation, o
 
     return (
         <div className='flex-none w-1/4 h-full flex flex-col p-4 gap-6'>
-            <div className='h-1/2 bg-slate-700 rounded-2xl'></div>
+            <div className='h-1/2 bg-slate-700 rounded-2xl flex flex-col items-center px-4 py-4'>
+                <div className='w-[150px] h-[150px] bg-red-200 rounded-full'>
+                    <img src="https://media.licdn.com/dms/image/v2/C4D03AQGh8UBflS3quQ/profile-displayphoto-shrink_400_400/profile-displayphoto-shrink_400_400/0/1625999448087?e=1732147200&v=beta&t=OODAmfTv-CmsjUO4cjfBRsYm05bILGj71iBUg4szE2s" alt="" className='w-full h-full object-fill rounded-full' />
+                </div>
+                <h1 className='mt-4'>Kaushal Agarwal</h1>
+            </div>
             <div className='h-1/2 bg-slate-700 rounded-2xl'></div>
             {showConfirmation ? (
                 <div ref={buttonsRef} className='flex gap-4 w-full'>
-                    <button className='bg-red-600 px-4 py-2 rounded-full' onClick={onConfirm}>
+                    <button className='border-2 border-red-600 px-4 py-2 rounded-full' onClick={onConfirm}>
                         Yes
                     </button>
                     <button className='bg-green-400 hover:bg-green-600 px-4 py-2 rounded-full w-full' onClick={() => setShowConfirmation(false)}>
