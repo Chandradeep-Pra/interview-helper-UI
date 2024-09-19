@@ -6,31 +6,41 @@ import useResponsive from "./hooks/useResponsive";
 import AItool from "./components/dashboard/AItool";
 import Sidebar from "./components/dashboard/Sidebar";
 import Topbar from "./components/dashboard/Topbar";
+import Interviewstar from './components/Interviewstar'; // Ensure this path is correct
 
 const MainContent = React.memo(({ breakpoint, sidebarToggle, setSidebarToggle }) => {
   const location = useLocation();
-  const showSidebarAndTopbar = location.pathname !== '/';
+  const isMockInterviewRoute = location.pathname === '/mock-interview';
 
   return (
-    <div className="flex flex-row w-full bg-black px-2 py-2 h-[100vh]">
-      {showSidebarAndTopbar && (
-        <Sidebar
-          toggle={sidebarToggle}
-          setToggle={setSidebarToggle}
-        />
+    <div className="flex flex-row w-full bg-black  h-[100vh]">
+      {/* Show Sidebar and Topbar only if not on the mock interview route */}
+      {!isMockInterviewRoute && (
+        <>
+          <Sidebar toggle={sidebarToggle} setToggle={setSidebarToggle} />
+          <div className="flex flex-col w-full px-2">
+            <Topbar />
+            <div className='h-[100vh] w-[100%]'>
+              {breakpoint !== 0 && (
+                <Routes>
+                  <Route path="/" element={<Landing />} />
+                  <Route path="/aitool" element={<AItool />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
+                  <Route path="/mock-interview" element={<Interviewstar />} />
+                </Routes>
+              )}
+            </div>
+          </div>
+        </>
       )}
-      <div className="flex flex-col w-full px-2">
-        {showSidebarAndTopbar && <Topbar />}
-        <div className='h-[100vh] w-[100%]'>
-          {breakpoint !== 0 && (
-            <Routes>
-              <Route path="/" element={<Landing />} />
-              <Route path="/aitool" element={<AItool />} />
-              <Route path="/dashboard" element={<Dashboard />} />
-            </Routes>
-          )}
+      {/* If it's the mock interview route, just render the Interviewstar component */}
+      {isMockInterviewRoute && (
+        <div className='h-full w-full'>
+          <Routes>
+            <Route path="/mock-interview" element={<Interviewstar />} />
+          </Routes>
         </div>
-      </div>
+      )}
     </div>
   );
 });

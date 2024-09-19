@@ -70,7 +70,7 @@ const Cardtest = () => {
   ];
 
   return (
-    <div className='flex flex-wrap gap-4 '>
+    <div className='flex flex-wrap gap-4  '>
       {mockTest.map((item, index) => (
         <div 
           key={index} 

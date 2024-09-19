@@ -5,3 +5,11 @@
 .text-gradient{
     @apply bg-gradient-to-r from-fuchsia-600 to-purple-600
 }
+
+.scrollbar-hidden {
+    scrollbar-width: none; /* For Firefox */
+}
+
+.scrollbar-hidden::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+}
