@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { FaMicrophone, FaChevronRight, FaChevronLeft, FaStop } from "react-icons/fa";
 import { gsap } from "gsap";
 import { useNavigate } from 'react-router-dom';
-import SpeechRecognition,{ useSpeechRecognition }  from 'react-speech-recognition';
+import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 const interviewQuestions = [
     { Question: "What is the difference between `var`, `let`, and `const`?" },
@@ -45,7 +45,7 @@ const Sidebar = ({ questions, expand, onQuestionClick, toggleExpand }) => {
                     key={index}
                     onClick={() => onQuestionClick(index)}
                 >
-                    <h1 className={`text-lg bg-slate-800 hover:bg-blue-200 ${index < 9?'px-5':'px-4'}  py-2 rounded-2xl hover:`}>{index + 1}</h1>
+                    <h1 className={`text-lg bg-slate-800 hover:bg-blue-200 ${index < 9 ? 'px-5' : 'px-4'} py-2 rounded-2xl`}>{index + 1}</h1>
                     {expand && <h1 className='text-sm'>{item.Question}</h1>}
                 </div>
             ))}
@@ -55,7 +55,7 @@ const Sidebar = ({ questions, expand, onQuestionClick, toggleExpand }) => {
 
 const SpeechRec = ({ isListening, setIsListening, setTranscript }) => {
     const { transcript, browserSupportsSpeechRecognition } = useSpeechRecognition();
-    console.log('Browser Support:', browserSupportsSpeechRecognition);
+
     useEffect(() => {
         setTranscript(transcript);
     }, [transcript, setTranscript]);
@@ -89,9 +89,8 @@ const SpeechRec = ({ isListening, setIsListening, setTranscript }) => {
     );
 };
 
-const QuestionDisplay = ({ question, index, onNext, onSubmit }) => {
+const QuestionDisplay = ({ question, index, onNext, onSubmit, transcript, setTranscript }) => {
     const [isListening, setIsListening] = useState(false);
-    const [transcript, setTranscript] = useState("");
 
     return (
         <div className={`flex transition-all duration-300 flex-grow bg-zinc-900 py-4 px-4 flex-col`}>
@@ -127,9 +126,6 @@ const ControlPanel = ({ onEndInterview, showConfirmation, setShowConfirmation, o
         }
     }, [showConfirmation]);
 
-
-   
-
     return (
         <div className='flex-none w-1/4 h-full flex flex-col p-4 gap-6'>
             <div className='h-1/2 bg-slate-700 rounded-2xl flex flex-col items-center px-4 py-4'>
@@ -161,34 +157,40 @@ const InterviewStar = () => {
     const [expand, setExpand] = useState(false);
     const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
     const [showConfirmation, setShowConfirmation] = useState(false);
-    
+    const [transcript, setTranscript] = useState(""); // Lifted state
+
     const navigate = useNavigate();
 
     const toggleExpand = () => setExpand(prev => !prev);
-    const handleQuestionClick = index => setSelectedQuestionIndex(index);
+    const handleQuestionClick = index => {
+        setSelectedQuestionIndex(index);
+        setTranscript(""); // Reset transcript when a new question is selected
+    };
     const handleNextClick = () => {
         if (selectedQuestionIndex < interviewQuestions.length - 1) {
             setSelectedQuestionIndex(prev => prev + 1);
+            setTranscript(""); // Reset transcript when moving to next question
         }
     };
     const handleSubmit = () => navigate('/dashboard');
-
-    const handleEndInterview = () => {
-        setShowConfirmation(true);
-    };
-
-    const handleConfirmYes = () => {
-        navigate('/dashboard');
-    };
+    const handleEndInterview = () => setShowConfirmation(true);
+    const handleConfirmYes = () => navigate('/dashboard');
 
     return (
         <div className='text-white h-full flex w-full'>
-            <Sidebar questions={interviewQuestions} expand={expand} onQuestionClick={handleQuestionClick} toggleExpand={toggleExpand} />
+            <Sidebar 
+                questions={interviewQuestions} 
+                expand={expand} 
+                onQuestionClick={handleQuestionClick} 
+                toggleExpand={toggleExpand} 
+            />
             <QuestionDisplay 
                 question={interviewQuestions[selectedQuestionIndex]} 
                 index={selectedQuestionIndex} 
                 onNext={handleNextClick} 
                 onSubmit={handleSubmit} 
+                transcript={transcript} // Pass down the transcript
+                setTranscript={setTranscript} // Pass down the setter function
             />
             <ControlPanel 
                 onEndInterview={handleEndInterview} 
