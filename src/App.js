@@ -13,7 +13,7 @@ const MainContent = React.memo(({ breakpoint, sidebarToggle, setSidebarToggle })
   const isMockInterviewRoute = location.pathname === '/mock-interview';
 
   return (
-    <div className="flex flex-row w-full bg-black  h-[100vh]">
+    <div className="flex flex-row w-full bg-black  h-[100vh] p-2">
       {/* Show Sidebar and Topbar only if not on the mock interview route */}
       {!isMockInterviewRoute && (
         <>

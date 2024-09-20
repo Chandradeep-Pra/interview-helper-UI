@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { FaMicrophone, FaChevronRight, FaChevronLeft } from "react-icons/fa";
+import { FaMicrophone, FaChevronRight, FaChevronLeft, FaStop } from "react-icons/fa";
 import { gsap } from "gsap";
 import { useNavigate } from 'react-router-dom';
+import SpeechRecognition,{ useSpeechRecognition }  from 'react-speech-recognition';
 
 const interviewQuestions = [
     { Question: "What is the difference between `var`, `let`, and `const`?" },
@@ -44,7 +45,7 @@ const Sidebar = ({ questions, expand, onQuestionClick, toggleExpand }) => {
                     key={index}
                     onClick={() => onQuestionClick(index)}
                 >
-                    <h1 className={`text-lg bg-slate-900 ${index < 9?'px-5':'px-4'}  py-2 rounded-2xl`}>{index + 1}</h1>
+                    <h1 className={`text-lg bg-slate-800 hover:bg-blue-200 ${index < 9?'px-5':'px-4'}  py-2 rounded-2xl hover:`}>{index + 1}</h1>
                     {expand && <h1 className='text-sm'>{item.Question}</h1>}
                 </div>
             ))}
@@ -52,27 +53,70 @@ const Sidebar = ({ questions, expand, onQuestionClick, toggleExpand }) => {
     );
 };
 
-const QuestionDisplay = ({ question, index, onNext, onSubmit }) => (
-    <div className={`flex transition-all duration-300 flex-grow bg-zinc-900 py-4 px-4 flex-col`}>
-        <div className='flex gap-2 items-center'>
-            <h1 className='font-bold text-2xl bg-blue-500 px-4 py-2 rounded-2xl'>{index + 1}</h1>
-            <h1 className='ml-2'>{question.Question}</h1>
-        </div>
-        <textarea className='bg-red-200 w-full mt-8 h-1/2 rounded-2xl bg-slate-900/[0.6] border-2 border-blue-500 p-4 text-sm min-h-[300px]'></textarea>
-        <div className='w-full flex justify-end gap-2 mt-4 px-2'>
-            <button className='bg-blue-500 p-2 rounded-full'><FaMicrophone size={24} /></button>
-            {index < interviewQuestions.length - 1 ? (
-                <button className='bg-green-600 px-6 rounded-full' onClick={onNext}>
-                    Next
+const SpeechRec = ({ isListening, setIsListening, setTranscript }) => {
+    const { transcript, browserSupportsSpeechRecognition } = useSpeechRecognition();
+    console.log('Browser Support:', browserSupportsSpeechRecognition);
+    useEffect(() => {
+        setTranscript(transcript);
+    }, [transcript, setTranscript]);
+
+    if (!browserSupportsSpeechRecognition) {
+        return <div>Your browser does not support speech recognition.</div>;
+    }
+
+    const startListening = () => {
+        setIsListening(true);
+        SpeechRecognition.startListening({ continuous: true, language: 'en-IN' });
+    };
+
+    const stopListening = () => {
+        setIsListening(false);
+        SpeechRecognition.stopListening();
+    };
+
+    return (
+        <>
+            {!isListening ? (
+                <button className='bg-blue-500 p-2 rounded-full' onClick={startListening}>
+                    <FaMicrophone size={24} />
                 </button>
             ) : (
-                <button className='bg-purple-400 hover:bg-purple-700 font-bold px-6 rounded-full' onClick={onSubmit}>
-                    Submit
+                <button className='bg-orange-500 p-2 rounded-full' onClick={stopListening}>
+                    <FaStop size={24} />
                 </button>
             )}
+        </>
+    );
+};
+
+const QuestionDisplay = ({ question, index, onNext, onSubmit }) => {
+    const [isListening, setIsListening] = useState(false);
+    const [transcript, setTranscript] = useState("");
+
+    return (
+        <div className={`flex transition-all duration-300 flex-grow bg-zinc-900 py-4 px-4 flex-col`}>
+            <div className='flex gap-2 items-center'>
+                <h1 className='font-bold text-2xl bg-blue-500 px-4 py-2 rounded-2xl'>{index + 1}</h1>
+                <h1 className='ml-2'>{question.Question}</h1>
+            </div>
+            <div className='bg-red-200 w-full mt-8 h-1/2 rounded-2xl bg-slate-900/[0.6] border-2 border-blue-500 p-4 text-sm min-h-[300px]'>
+                {transcript}
+            </div>
+            <div className='w-full flex justify-end gap-2 mt-4 px-2'>
+                <SpeechRec setIsListening={setIsListening} isListening={isListening} setTranscript={setTranscript} />
+                {index < interviewQuestions.length - 1 ? (
+                    <button className='bg-green-600 px-6 rounded-full' onClick={onNext}>
+                        Next
+                    </button>
+                ) : (
+                    <button className='bg-purple-400 hover:bg-purple-700 font-bold px-6 rounded-full' onClick={onSubmit}>
+                        Submit
+                    </button>
+                )}
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
 const ControlPanel = ({ onEndInterview, showConfirmation, setShowConfirmation, onConfirm }) => {
     const buttonsRef = useRef(null);
@@ -82,6 +126,9 @@ const ControlPanel = ({ onEndInterview, showConfirmation, setShowConfirmation, o
             gsap.fromTo(buttonsRef.current, { opacity: 0 }, { opacity: 1, duration: 0.6 });
         }
     }, [showConfirmation]);
+
+
+   
 
     return (
         <div className='flex-none w-1/4 h-full flex flex-col p-4 gap-6'>
@@ -114,6 +161,7 @@ const InterviewStar = () => {
     const [expand, setExpand] = useState(false);
     const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
     const [showConfirmation, setShowConfirmation] = useState(false);
+    
     const navigate = useNavigate();
 
     const toggleExpand = () => setExpand(prev => !prev);
