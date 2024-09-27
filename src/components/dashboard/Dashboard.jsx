@@ -9,9 +9,18 @@ const Dashboard = () => {
             <h1 className='text-lg text-white'>Popular Mocks</h1>
         </div>
         
-        <div className='bg-zinc-800 max-h-[calc(100vh-120px)] rounded-lg py-2 px-2 flex-1 overflow-y-auto'>
+        <div className='max-h-[calc(100vh-120px)] rounded-lg   flex gap-2'>
             {/* Make Grid from Tailwind  */}
+            <div className=' bg-zinc-800 h-full overflow-y-auto p-2 rounded-xl w-1/4'>
+
             <Cardtest />
+            </div>
+            <div className='bg-zinc-800 w-full'>
+              <div>
+              <h1 className='text-lg text-white'>By Tech Stack</h1>
+              </div>
+              <div></div>
+            </div>
         </div>
     </div>
   )

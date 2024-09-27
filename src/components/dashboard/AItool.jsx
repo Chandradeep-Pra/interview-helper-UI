@@ -17,6 +17,8 @@ const AItool = () => {
   const jobDescriptionRef = useRef(null);
   const navigate = useNavigate();
 
+  const [ats,setAts] = useState("?")
+
   const handleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
     
@@ -98,9 +100,9 @@ const AItool = () => {
   const renderATS = () => (
     <div className='min-h-[300px] min-w-[250px] bg-zinc-900 rounded-2xl flex py-8 items-center flex-col'>
       <div className='h-[120px] w-[120px] rounded-full bg-zinc-800 text-center py-7 text-green-700 font-bold text-6xl shadow-inner drop-shadow-2xl shadow-sky-700'>
-        64
+        {ats}
       </div>
-      <h1 className='text-2xl font-bold text-white mt-6'>ATS</h1>
+      <button className='text-xl font-bold text-white mt-6 border-2 border-green-600 py-1 px-4 rounded-full'>Get ATS</button>
     </div>
   );
 

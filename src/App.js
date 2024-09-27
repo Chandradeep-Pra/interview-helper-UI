@@ -11,15 +11,17 @@ import Interviewstar from './components/Interviewstar'; // Ensure this path is c
 const MainContent = React.memo(({ breakpoint, sidebarToggle, setSidebarToggle }) => {
   const location = useLocation();
   const isMockInterviewRoute = location.pathname === '/mock-interview';
+  const landingRoute = location.pathname === '/';
 
   return (
     <div className="flex flex-row w-full bg-black  h-[100vh] p-2">
       {/* Show Sidebar and Topbar only if not on the mock interview route */}
       {!isMockInterviewRoute && (
         <>
-          <Sidebar toggle={sidebarToggle} setToggle={setSidebarToggle} />
+
+          {!landingRoute && <Sidebar toggle={sidebarToggle} setToggle={setSidebarToggle} />}
           <div className="flex flex-col w-full px-2">
-            <Topbar />
+           { !landingRoute && <Topbar /> }
             <div className='h-[100vh] w-[100%]'>
               {breakpoint !== 0 && (
                 <Routes>
