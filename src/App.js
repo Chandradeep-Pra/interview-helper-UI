@@ -12,7 +12,7 @@ const MainContent = React.memo(({ breakpoint, sidebarToggle, setSidebarToggle })
   const showSidebarAndTopbar = location.pathname !== '/';
 
   return (
-    <div className="flex flex-row w-full bg-black px-2 py-2 h-[100vh]">
+    <div className="flex flex-row w-full bg-blue-500 px-2 py-2 h-[100vh]">
       {showSidebarAndTopbar && (
         <Sidebar
           toggle={sidebarToggle}
